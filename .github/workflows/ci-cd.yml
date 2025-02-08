@@ -34,13 +34,17 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    steps:
+    steps:  
+      - name: List files to debug
+        run: |
+           ls -R $(pwd)/kubernetes
+         
       - name: Set up Kubernetes
         uses: azure/setup-kubectl@v3
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/kubernetes/service1-deployment.yaml
-          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/kubernetes/service1-service.yaml
-          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/kubernetes/service2-deployment.yaml
-          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/kubernetes/service2-service.yaml
+          kubectl apply -f ./kubernetes/service1-deployment.yaml
+          kubectl apply -f ./kubernetes/service1-service.yaml
+          kubectl apply -f ./kubernetes/service2-deployment.yaml
+          kubectl apply -f ./kubernetes/service2-service.yaml
