@@ -24,7 +24,7 @@ jobs:
       - name: Build and push Service 1
         run: |
           docker build -t kristinakoneva/service1:latest ./service1
-          docker push kristinakonevar/service1:latest
+          docker push kristinakoneva/service1:latest
 
       - name: Build and push Service 2
         run: |
