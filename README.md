@@ -1,2 +1,2 @@
-# devops-ci-cd-microservices
-Project for the DevOps Course
+# DevOps - CI/CD pipeline for a microservice application
+_Kristina Koneva (201513)_
