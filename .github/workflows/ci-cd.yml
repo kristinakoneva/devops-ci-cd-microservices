@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Service 1
+        run: |
+          docker build -t kristinakoneva/service1:latest ./service1
+          docker push kristinakonevar/service1:latest
+
+      - name: Build and push Service 2
+        run: |
+          docker build -t kristinakoneva/service2:latest ./service2
+          docker push kristinakoneva/service2:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Kubernetes
+        uses: azure/setup-kubectl@v3
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f kubernetes/service1-deployment.yaml
+          kubectl apply -f kubernetes/service1-service.yaml
+          kubectl apply -f kubernetes/service2-deployment.yaml
+          kubectl apply -f kubernetes/service2-service.yaml
