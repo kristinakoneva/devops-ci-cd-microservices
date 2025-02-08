@@ -40,7 +40,7 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/devops-ci-cd-microservices/kubernetes/service1-deployment.yaml
-          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/devops-ci-cd-microservices/kubernetes/service1-service.yaml
-          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/devops-ci-cd-microservices/kubernetes/service2-deployment.yaml
-          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/devops-ci-cd-microservices/kubernetes/service2-service.yaml
+          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/kubernetes/service1-deployment.yaml
+          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/kubernetes/service1-service.yaml
+          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/kubernetes/service2-deployment.yaml
+          kubectl apply -f /home/runner/work/devops-ci-cd-microservices/kubernetes/service2-service.yaml
