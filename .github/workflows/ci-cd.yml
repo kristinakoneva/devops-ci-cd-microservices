@@ -34,7 +34,18 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    steps:  
+    steps: 
+      - name: Print current working directory
+        run: |
+         echo "Current working directory: $(pwd)"
+         ls -R $(pwd)
+    
+      - name: Check contents of Kubernetes folder
+        run: |
+         echo "Listing contents of the kubernetes directory:"
+         ls -R ./kubernetes  
+
+         
       - name: Set up Kubernetes
         uses: azure/setup-kubectl@v3
 
