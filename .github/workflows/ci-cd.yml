@@ -35,10 +35,6 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
     steps:  
-      - name: List files to debug
-        run: |
-           ls -R $(pwd)/kubernetes
-         
       - name: Set up Kubernetes
         uses: azure/setup-kubectl@v3
 
