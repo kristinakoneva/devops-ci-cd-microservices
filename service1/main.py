@@ -10,7 +10,7 @@ def read_root():
 @app.get("/call-service2")
 def call_service2():
     try:
-        response = requests.get("http://service2:80/")
+        response = requests.get("http://0.0.0.0:8002/")
         return {"service1": "Calling Service 2", "response": response.json()}
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
