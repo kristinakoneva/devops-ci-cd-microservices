@@ -1,0 +1,21 @@
+# Feature label for branches starting with "feature/"
+feature:
+  - head-branch: ['^feature/']
+
+# Bug label for branches starting with "fix/" or "bug/"
+bug:
+  - head-branch: ['^fix/', '^bug/']
+
+# Documentation label for changes in "docs/" folder or specific prefixes
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: 'docs/**'
+  - head-branch: ['^documentation/', '^docs/'] # Considering "documentation" or "docs" prefixes
+
+# Enhancement label for branches starting with "enhancement/"
+enhancement:
+  - head-branch: ['^enhancement/']
+
+# Release label for PRs targeting the "main" branch
+release:
+  - base-branch: ['^main$'] # Use ^ and $ for exact match of the branch name
