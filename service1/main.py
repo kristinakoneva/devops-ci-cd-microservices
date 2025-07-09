@@ -5,17 +5,18 @@ This FastAPI app serves as Service 1, provides a modern web UI,
 and communicates with a separate Service 2.
 """
 
-from fastapi import FastAPI, Request
+import os
+import uvicorn
+import requests
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-import requests
-import uvicorn
-import os
 
 STATIC_DIR = "static"
 os.makedirs(STATIC_DIR, exist_ok=True)
 
-html_content = """
+# pylint: disable=C0301 # Ignoring line length for embedded HTML/CSS/JS for readability
+HTML_CONTENT = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -186,9 +187,13 @@ html_content = """
 </body>
 </html>
 """
+# pylint: enable=C0301
+
 html_file_path = os.path.join(STATIC_DIR, "index.html")
-with open(html_file_path, "w") as f:
-    f.write(html_content)
+# pylint: disable=W1514 # Specified encoding for security review
+with open(html_file_path, "w", encoding="utf-8") as file_to_write:
+    file_to_write.write(HTML_CONTENT)
+# pylint: enable=W1514
 
 app = FastAPI(
     title="Service 1 API",
@@ -206,25 +211,27 @@ def read_root():
 @app.get("/call-service2")
 def call_service2():
     """Calls Service 2 and returns its response."""
-    SERVICE2_URL = os.getenv("SERVICE2_URL", "http://service2:8002/")
+    service_2_url = os.getenv("SERVICE_2_URL", "http://service2:8002/")
     try:
-        response = requests.get(SERVICE2_URL, timeout=5)
+        response = requests.get(service_2_url, timeout=5)
         response.raise_for_status()
         return {"service1": "Calling Service 2", "response": response.json()}
     except requests.exceptions.Timeout:
-        return {"error": "Service 2 call timed out", "details": f"Could not reach {SERVICE2_URL} within 5 seconds."}, 504
+        return {"error": "Service 2 call timed out", "details": f"Could not reach {service_2_url} within 5 seconds."}, 504
     except requests.exceptions.ConnectionError:
-        return {"error": "Service 2 connection error", "details": f"Could not connect to {SERVICE2_URL}. Is Service 2 running?"}, 503
-    except requests.exceptions.HTTPError as e:
-        return {"error": f"Service 2 returned an HTTP error: {e.response.status_code}", "details": e.response.text}, e.response.status_code
-    except requests.exceptions.RequestException as e:
-        return {"error": str(e)}, 500
+        return {"error": "Service 2 connection error", "details": f"Could not connect to {service_2_url}. Is Service 2 running?"}, 503
+    except requests.exceptions.HTTPError as exc: # Renamed 'e' to 'exc' to avoid conflict
+        return {"error": f"Service 2 returned an HTTP error: {exc.response.status_code}", "details": exc.response.text}, exc.response.status_code
+    except requests.exceptions.RequestException as exc: # Renamed 'e' to 'exc' to avoid conflict
+        return {"error": str(exc)}, 500
 
 @app.get("/ui", response_class=HTMLResponse, include_in_schema=False)
 async def serve_ui():
     """Serves the Service 1 UI."""
-    with open(os.path.join(STATIC_DIR, "index.html"), "r") as f:
-        return HTMLResponse(content=f.read())
+    # pylint: disable=W1514,W0621 # Specified encoding; renamed file_handle for clarity
+    with open(os.path.join(STATIC_DIR, "index.html"), "r", encoding="utf-8") as file_handle:
+        return HTMLResponse(content=file_handle.read())
+    # pylint: enable=W1514,W0621
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static_assets")
 

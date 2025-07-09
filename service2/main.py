@@ -4,9 +4,9 @@ Main module for Service 2.
 This is a simple FastAPI app that Service 1 will call.
 """
 
-from fastapi import FastAPI
+from datetime import datetime, timezone
 import uvicorn
-from datetime import datetime, timezone # Import datetime and timezone
+from fastapi import FastAPI
 
 app = FastAPI(
     title="Service 2 API",
@@ -17,9 +17,8 @@ app = FastAPI(
 @app.get("/")
 def read_root():
     """Returns a welcome message from Service 2 with a dynamic timestamp."""
-    # Get current UTC time and format it as an ISO 8601 string
     current_timestamp = datetime.now(timezone.utc).isoformat(timespec='seconds') + 'Z'
     return {"message": "Hello from Service 2!", "timestamp": current_timestamp}
 
 if __name__ == "__main__":
-    uvicorn.run("service2.main:app", host="0.0.0.0", port=8002, reload=True)
+    uvicorn.run("service2:app", host="0.0.0.0", port=8002, reload=True)
