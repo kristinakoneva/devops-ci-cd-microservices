@@ -201,7 +201,7 @@ app = FastAPI(
 @app.get("/")
 def read_root():
     """Returns a welcome message from Service 1."""
-    return {"message": "Hello from Service 1!!"}
+    return {"message": "Hello from Service 1!"}
 
 @app.get("/call-service2")
 def call_service2():
