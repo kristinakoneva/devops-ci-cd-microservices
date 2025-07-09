@@ -18,4 +18,4 @@ enhancement:
 
 # Release label for PRs targeting the "main" branch
 release:
-  - base-branch: ['^main$'] # Use ^ and $ for exact match of the branch name
+  - base-branch: ['^main$']
