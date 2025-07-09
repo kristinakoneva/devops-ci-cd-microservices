@@ -217,12 +217,24 @@ def call_service2():
         response.raise_for_status()
         return {"service1": "Calling Service 2", "response": response.json()}
     except requests.exceptions.Timeout:
-        return {"error": "Service 2 call timed out", "details": f"Could not reach {service_2_url} within 5 seconds."}, 504
+        return (
+            {"error": "Service 2 call timed out",
+             "details": f"Could not reach {service_2_url} within 5 seconds."},
+            504
+        )
     except requests.exceptions.ConnectionError:
-        return {"error": "Service 2 connection error", "details": f"Could not connect to {service_2_url}. Is Service 2 running?"}, 503
-    except requests.exceptions.HTTPError as exc: # Renamed 'e' to 'exc' to avoid conflict
-        return {"error": f"Service 2 returned an HTTP error: {exc.response.status_code}", "details": exc.response.text}, exc.response.status_code
-    except requests.exceptions.RequestException as exc: # Renamed 'e' to 'exc' to avoid conflict
+        return (
+            {"error": "Service 2 connection error",
+             "details": f"Could not connect to {service_2_url}. Is Service 2 running?"},
+            503
+        )
+    except requests.exceptions.HTTPError as exc:
+        return (
+            {"error": f"Service 2 returned an HTTP error: {exc.response.status_code}",
+             "details": exc.response.text},
+            exc.response.status_code
+        )
+    except requests.exceptions.RequestException as exc:
         return {"error": str(exc)}, 500
 
 @app.get("/ui", response_class=HTMLResponse, include_in_schema=False)

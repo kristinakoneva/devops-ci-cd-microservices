@@ -21,4 +21,4 @@ def read_root():
     return {"message": "Hello from Service 2!", "timestamp": current_timestamp}
 
 if __name__ == "__main__":
-    uvicorn.run("service2:app", host="0.0.0.0", port=8002, reload=True)
+    uvicorn.run("service2.main:app", host="0.0.0.0", port=8002, reload=True)
