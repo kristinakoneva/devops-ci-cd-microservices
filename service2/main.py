@@ -18,7 +18,7 @@ app = FastAPI(
 def read_root():
     """Returns a welcome message from Service 2 with a dynamic timestamp."""
     current_timestamp = datetime.now(timezone.utc).isoformat(timespec='seconds') + 'Z'
-    return {"message": "Hello from Service 2!", "timestamp": current_timestamp}
+    return {"message": "Hello from Service 2!!!", "timestamp": current_timestamp}
 
 if __name__ == "__main__":
     uvicorn.run("service2.main:app", host="0.0.0.0", port=8002, reload=True)
